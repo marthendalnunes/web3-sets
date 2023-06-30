@@ -14,13 +14,7 @@ import { useColorMode } from '@/lib/state/color-mode'
 const connectors = connectorsForWallets([
   {
     groupName: 'Recommended',
-    wallets: [
-      injectedWallet({ chains }),
-      metaMaskWallet({ chains }),
-      rainbowWallet({ chains }),
-      coinbaseWallet({ chains, appName: siteConfig.name }),
-      walletConnectWallet({ chains }),
-    ],
+    wallets: [injectedWallet({ chains }), metaMaskWallet({ chains }), coinbaseWallet({ chains, appName: siteConfig.name })],
   },
 ])
 
