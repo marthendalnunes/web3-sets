@@ -46,5 +46,5 @@ const Table = () => {
     [user]
   )
 
-  return <div className="w-full">{!isLoading && <TransactionsTable className="w-full" data={data?.transactions} />}</div>
+  return <div className="w-full">{!isLoading && <TransactionsTable className="w-full" data={data} />}</div>
 }

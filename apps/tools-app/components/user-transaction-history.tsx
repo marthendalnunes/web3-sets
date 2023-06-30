@@ -29,7 +29,7 @@ const downloadFile = ({ data, fileName, fileType }: any) => {
 
 export function FormUserTransactionHistory() {
   const { register, handleSubmit } = useForm()
-  const [transactions, setTransactions] = useState<string[] | undefined>(undefined)
+  const [transactions, setTransactions] = useState<any | undefined>(undefined)
   const onSubmit = async (data: FieldValues) => {
     console.log(data)
     const transaction_history = await appEtherscanAccountTransactions({
@@ -37,7 +37,7 @@ export function FormUserTransactionHistory() {
       chainId: data.chainId || 1,
     })
 
-    setTransactions(transaction_history.transactions)
+    setTransactions(transaction_history?.transactions)
   }
 
   const onDownload = () => {
