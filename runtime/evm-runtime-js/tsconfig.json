@@ -1,0 +1,23 @@
+{
+  "extends": "tsconfig/base.json",
+  "compilerOptions": {
+    "baseUrl": ".",
+    "declaration": true,
+    "declarationDir": "dist",
+    "esModuleInterop": true,
+    "isolatedModules": true,
+    "module": "ESNext",
+    "moduleResolution": "node",
+    "outDir": "dist",
+    "resolveJsonModule": true,
+    "skipLibCheck": true,
+    "strict": true,
+    "target": "ESNext",
+    "types": ["node"],
+    "paths": {
+      "abitype": [".pnpm/abitype@0.8.3_typescript@4.9.4_zod@3.21.4/node_modules/abitype"],
+      "abitype/zod": ["./node_modules/abitype/zod"],
+    }
+  },
+  "exclude": ["node_modules", "dist"]
+}

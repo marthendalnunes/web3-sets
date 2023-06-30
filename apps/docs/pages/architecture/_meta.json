@@ -1,0 +1,14 @@
+{
+  "entities": {
+    "title": "Entities"
+  },
+  "state-artifacts": {
+    "title": "Artifacts"
+  },
+  "conditions": {
+    "title": "Conditions"
+  },
+  "rules": {
+    "title": "Rules"
+  }
+}

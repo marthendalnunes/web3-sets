@@ -1,0 +1,100 @@
+{
+	"id": "set:identity:member-with-ticket-or-vip",
+	"object": "set:identity",
+	"name": "District Member with Ticket or VIP",
+	"description": "A District member with a ticket or VIP (Verified Identity Pass) status",
+	"keywords": ["member", "district", "vip"],
+	"version": {
+		"major": 0,
+		"minor": 0,
+		"patch": 0
+	},
+	"entities": [
+		{
+			"type": "credential",
+			"id": "disco:credential:membership",
+			"name": "Membership",
+			"schema": "https://raw.githubusercontent.com/discoxyz/disco-schemas/main/json/MembershipCredential/1-0-0.json"
+		},
+		{
+			"type": "credential",
+			"id": "disco:credential:ticket",
+			"name": "Ticket",
+			"schema": "https://raw.githubusercontent.com/discoxyz/disco-schemas/main/json/TicketCredential/1-0-0.json"
+		},
+		{
+			"type": "credential",
+			"id": "disco:credential:vip",
+			"name": "VIP (Verified Identity Pass)",
+			"schema": "https://raw.githubusercontent.com/discoxyz/disco-schemas/main/json/VerifiedIdentityPass/1-0-0.json"
+		}
+	],
+	"conditions": [
+		{
+			"id": "condition:member:district",
+			"eid": "disco:credential:membership",
+			"operations": [
+				{
+					"method": "issuedBy",
+					"args": ["did:web:districtlabs.com"]
+				}
+			]
+		},
+		{
+			"id": "condition:vip:district",
+			"eid": "disco:credential:vip",
+			"operations": [
+				{
+					"method": "issuedBy",
+					"args": ["did:web:districtlabs.com"]
+				}
+			]
+		},
+		{
+			"id": "condition:ticket:district-disco-party",
+			"eid": "disco:credential:ticket",
+			"operations": [
+				{
+					"method": "issuedBy",
+					"args": ["did:web:disco.xyz"]
+				}
+			]
+		}
+	],
+	"rules": [
+		{
+			"id": "rule:base",
+			"root": true,
+			"operations": [
+				{
+					"method": "oneOf",
+					"args": [
+						"rule:district-member-with-ticket",
+						"rule:district-member-with-vip"
+					]
+				}
+			]
+		},
+		{
+			"id": "rule:district-member-with-ticket",
+			"operations": [
+				{
+					"method": "all",
+					"args": [
+						"condition:member:district",
+						"condition:ticket:district-disco-party"
+					]
+				}
+			]
+		},
+		{
+			"id": "rule:district-member-with-vip",
+			"operations": [
+				{
+					"method": "all",
+					"args": ["condition:vip:district"]
+				}
+			]
+		}
+	]
+}

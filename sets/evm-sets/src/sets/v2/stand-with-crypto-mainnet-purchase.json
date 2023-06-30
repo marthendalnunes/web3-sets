@@ -1,0 +1,46 @@
+{
+	"id": "set:coinbase:stand_with_crypto:purchase",
+	"object": "set:evm",
+	"name": "Mint Stand with Crypto NFT by Coinbase",
+	"description": "Mint Stand with Crypto Shield from Coinbase on the Zora platform",
+	"keywords": ["defi", "shield", "coinbase"],
+	"version": {
+		"major": 0,
+		"minor": 0,
+		"patch": 0
+	},
+	"entities": [
+		{
+			"id": "entity:coinbase:stand_with_crypto",
+			"chainId": 1,
+			"address": "0x9d90669665607f08005cae4a7098143f554c59ef",
+			"abi": "ipfs://QmWesVTzwwEUxaHkf3kbNWWPKoiFsxTxJCsubVH9V1VEeW"
+		}
+	],
+	"conditions": [
+		{
+			"id": "condition:purchase",
+			"eid": "entity:coinbase:stand_with_crypto",
+			"type": "transaction",
+			"signature": "purchase(uint256)",
+			"operations": [
+				{
+					"method": "observe",
+					"args": [0, "gte", "1"]
+				}
+			]
+		}
+	],
+	"rules": [
+		{
+			"id": "rule:complete",
+			"root": true,
+			"operations": [
+				{
+					"method": "all",
+					"args": ["condition:purchase"]
+				}
+			]
+		}
+	]
+}

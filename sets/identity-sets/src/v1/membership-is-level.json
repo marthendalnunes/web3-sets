@@ -1,0 +1,41 @@
+{
+    "id": "set:identity:district-member",
+    "object": "set:identity",
+    "name": "District Labs Member",
+    "description": "Checks if user is a District Member above level 5.",
+    "keywords": ["member", "district"],
+    "version": {
+      "major": 0,
+      "minor": 0,
+      "patch": 0
+    },
+    "entities": [
+      {
+        "type":"credential",
+        "id": "district:credential:membership",
+        "name": "Membership",
+        "schema": "https://raw.githubusercontent.com/discoxyz/disco-schemas/main/json/MembershipCredential/1-0-0.json"
+      }
+    ],
+    "conditions": [
+      {
+        "id": "condition:issuance",
+        "eid": "district:credential:disconaut",
+        "operations": ["issuedBy", "is"],
+        "args": [
+            ["did:web:districtlabs.com"],
+            ["credentialSubject.membershipLevel", ">=", "5"]
+        ]
+      } 
+    ],
+    "rules": [
+      {
+        "id": "rule:base",
+        "operations": ["all"],
+        "args": [
+            ["condition:issuance"]
+        ]
+      }
+    ]
+  }
+  

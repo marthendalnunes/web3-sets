@@ -1,0 +1,9 @@
+packages:
+  - "apps/*"
+  - "contracts/*"
+  - "packages/*"
+  - "runtime/*"
+  - "schemas/*"
+  - "sets/*"
+overrides:
+  wagmi: 0.12.2

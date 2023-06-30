@@ -1,0 +1,41 @@
+{
+    "id": "set:identity:ethereum-hacker",
+    "object": "set:identity",
+    "name": "ETHGlobal Hacker",
+    "description": "Checks if user has attended an ETHGlobal event.",
+    "keywords": ["proof-of-hack", "ethglobal"],
+    "version": {
+      "major": 0,
+      "minor": 0,
+      "patch": 0
+    },
+    "entities": [
+      {
+        "type":"credential",
+        "id": "disco:credential:proof-of-hack",
+        "name": "Proof of Hack Credential",
+        "schema": "https://raw.githubusercontent.com/discoxyz/disco-schemas/main/json/ProofOfHackCredential/1-0-0.json"
+      }
+    ],
+    "conditions": [
+      {
+        "id": "condition:issuance",
+        "eid": "disco:credential:disconaut",
+        "operations": ["issuedBy", "isOneOf"],
+        "args": [
+            ["registry:eip155:10:v0:0x0000000000000000000000000000000000000000"],
+            ["credentialSubject.place", "==", ["ETHWaterloo", "ETHLisbon", "ETHNewYork", "ETHIndia"]]
+        ]
+      } 
+    ],
+    "rules": [
+      {
+        "id": "rule:base",
+        "operations": ["all"],
+        "args": [
+            ["condition:issuance"]
+        ]
+      }
+    ]
+  }
+  

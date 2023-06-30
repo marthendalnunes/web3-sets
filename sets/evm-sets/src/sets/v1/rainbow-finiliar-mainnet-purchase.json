@@ -1,0 +1,47 @@
+{
+  "id": "set:rainbow:finiliar:mainnet:purchase",
+  "object": "set:evm",
+  "name": "Mint Finiliar NFT by Rainbow",
+  "description": "Mint the Finiliar NFT by Rainbow",
+  "keywords": ["defi", "rainbow"],
+  "tags": {},
+  "version": {
+    "major": 0,
+    "minor": 0,
+    "patch": 0
+  },
+  "entities": [
+    {
+        "name": "Rainbow Finiliar Cloud",
+        "chainId": 1,
+        "address": "0xc5f18a7bf825c2b0433102da5bc79c9edfc3fa89",
+        "abi": "ipfs://QmWesVTzwwEUxaHkf3kbNWWPKoiFsxTxJCsubVH9V1VEeW"
+    }
+  ],
+  "conditions": [
+    {
+      "id": "condition:purchase",
+      "eid": "0xc5f18a7bf825c2b0433102da5bc79c9edfc3fa89",
+      "name": "ERC721DropProxy : Finiliar Cloud",
+      "type": "transaction",
+      "signature": "purchase(uint256)",
+      "args": [
+        {
+          "index": 0,
+          "type": "bignumber",
+          "condition": "gte",
+          "value": "1"
+        }
+      ]
+    }
+  ],
+  "rules": [
+    {
+      "id": "rule:complete",
+      "cid": ["condition:purchase"],
+      "operations": ["isComplete"],
+      "args": [[true]],
+      "range": [100]
+    }
+  ]
+}

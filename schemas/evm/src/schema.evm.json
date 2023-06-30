@@ -1,0 +1,437 @@
+{
+   "$schema": "http://json-schema.org/draft-07/schema#",
+   "$id": "https://github.com/web3-sets/lab/blob/main/schemas/schema-smart-contract/src/schema.evm.json",
+   "title": "Web3 EVM Entity Set Schema",
+   "description": " The EVM set schema for Web3 Set standard.",
+   "type": "object",
+   "additionalProperties": true,
+   "required": ["id", "object", "version", "entities", "conditions", "rules"],
+   "properties": {
+     "id": {
+       "$ref": "#/definitions/IdentifierDefinition"
+     },
+     "name": {
+       "type": "string",
+       "description": "Name of the set.",
+       "examples": ["Basic EVM Set"]
+     },
+     "object": {
+       "type": "string",
+       "pattern": "^set:evm$"
+     },
+     "version": {
+       "$ref": "#/definitions/Version"
+     },
+     "keywords": {
+       "type": "array",
+       "description": "Keywords associated with the contents of the list; may be used in list discoverability",
+       "items": {
+         "type": "string",
+         "description": "A keyword to describe the contents of the list",
+         "minLength": 1,
+         "maxLength": 64,
+         "pattern": "^[\\w ]+$",
+         "examples": ["defi", "swap", "deposit"]
+       },
+       "maxItems": 20,
+       "uniqueItems": true
+     },
+     "entities": {
+       "type": "array",
+       "description": "Entities in the EVM set.",
+       "items": {
+         "$ref": "#/definitions/EntityDefinition"
+       },
+       "minItems": 0,
+       "maxItems": 16
+     },
+     "conditions": {
+       "type": "array",
+       "description": "Conditions in the EVM set.",
+       "items": {
+         "$ref": "#/definitions/ConditionDefinition"
+       },
+       "minItems": 0,
+       "maxItems": 256
+     },
+     "rules": {
+       "type": "array",
+       "description": "Rules in the EVM set.",
+       "items": {
+         "$ref": "#/definitions/RuleDefinition"
+       },
+       "minItems": 0,
+       "maxItems": 256
+     }
+   },
+   "definitions": {
+     "IdentifierDefinition": {
+       "type": "string",
+       "description": "Identifier",
+       "minLength": 1,
+       "maxLength": 256
+     },
+     "EntityDefinition": {
+       "type": "object",
+       "description": "",
+       "additionalProperties": false,
+       "required": ["id", "chainId", "address", "abi"],
+       "properties": {
+         "id": {
+           "type": "string",
+           "description": "URN Identifier.",
+           "examples": ["entity:pooltogether:v4:prizepool"]
+         },
+         "name": {
+           "type": "string",
+           "description": "Human readable name.",
+           "examples": ["PoolTogether V4 PrizePool"]
+         },
+         "chainId": {
+           "type": "integer",
+           "description": "Chain ID entity is located on",
+           "minimum": 1,
+           "examples": [1, 137, 43114]
+         },
+         "address": {
+           "type": "string",
+           "description": "The checksummed address of the entity",
+           "pattern": "^0x[a-fA-F0-9]{40}$",
+           "examples": ["0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48"]
+         },
+         "abi": {
+           "type": ["array", "string"],
+           "description": "The ABI (Application Binary Interface) for a smart contract",
+           "oneOf": [
+             {
+               "type": "string",
+               "description": "A URI string that points to the location of the ABI file"
+             },
+             {
+               "type": "array",
+               "description": "A Solidity smart contract ABI as an array of objects",
+               "items": {
+                 "type": "object",
+                 "required": ["inputs", "name", "outputs", "stateMutability", "type"],
+                 "properties": {
+                   "inputs": {
+                     "type": "array",
+                     "items": {
+                       "type": "object",
+                       "required": ["internalType", "name", "type"],
+                       "properties": {
+                         "internalType": {
+                           "type": "string"
+                         },
+                         "name": {
+                           "type": "string"
+                         },
+                         "type": {
+                           "type": "string"
+                         }
+                       }
+                     }
+                   },
+                   "name": {
+                     "type": "string"
+                   },
+                   "outputs": {
+                     "type": "array",
+                     "items": {
+                       "type": "object",
+                       "required": ["internalType", "name", "type"],
+                       "properties": {
+                         "internalType": {
+                           "type": "string"
+                         },
+                         "name": {
+                           "type": "string"
+                         },
+                         "type": {
+                           "type": "string"
+                         }
+                       }
+                     }
+                   },
+                   "stateMutability": {
+                     "type": "string"
+                   },
+                   "type": {
+                     "type": "string"
+                   }
+                 }
+               }
+             }
+           ]
+         }
+       }
+     },
+     "ConditionDefinition": {
+       "type": "object",
+       "description": "EVM condition definition",
+       "additionalProperties": false,
+       "required": ["id", "eid", "type", "signature", "operations"],
+       "properties": {
+         "id": {
+           "$ref": "#/definitions/IdentifierDefinition"
+         },
+         "name": {
+           "type": "string",
+           "description": "Human readable name",
+           "examples": ["PoolTogether V4 USDC PrizePool"]
+         },
+         "eid": {
+           "$ref": "#/definitions/IdentifierDefinition"
+         },
+         "type": {
+           "type": "string",
+           "description": "EVM condition type",
+           "oneOf": [
+             {
+               "pattern": "^transaction$"
+             },
+             {
+               "pattern": "^log$"
+             },
+             {
+               "pattern": "^storage_proof$"
+             },
+             {
+               "pattern": "^archive_read$"
+             },
+             {
+               "pattern": "^read$"
+             }
+           ],
+           "examples": ["transaction", "log", "read"]
+         },
+         "signature": {
+           "type": "string",
+           "description": "State artifact signature",
+           "examples": ["functionName(address, uint256)", "Event(address,uint256,uint256)"]
+         },
+         "operations": {
+           "type": "array",
+           "description": "Logic operations applied to an entity artifact",
+           "items": {
+             "$ref": "#/definitions/ConditionOperation"
+           }
+         }
+       }
+     },
+     "RuleDefinition": {
+       "type": "object",
+       "description": "",
+       "additionalProperties": false,
+       "required": ["id", "operations"],
+       "properties": {
+         "id": {
+           "$ref": "#/definitions/IdentifierDefinition"
+         },
+        "root": {
+          "type": "boolean",
+          "description": "A set must have at least one root rule.",
+          "examples": [true]
+        },
+        "operations": {
+          "type": "array",
+          "description": "Operations applied to conditions and other rules",
+          "items": {
+            "$ref": "#/definitions/RuleOperation"
+          }
+        }
+       }
+     },
+     "ConditionOperation": {
+      "type": "object",
+      "description": "Logic operator to apply to the condition",
+      "additionalProperties": false,
+      "required": ["method", "args"],
+      "properties": {
+        "method": {
+          "type": "string",
+          "description": "Operation method",
+          "examples": ["beforeBlock"],
+          "oneOf": [
+            {
+              "pattern": "^beforeBlock$"
+            },
+            {
+              "pattern": "^afterBlock$"
+            },
+            {
+              "pattern": "^betweenBlocks$"
+            },
+            {
+              "pattern": "^beforeTimestamp$"
+            },
+            {
+              "pattern": "^afterTimestamp$"
+            },
+            {
+              "pattern": "^betweenTimestamps$"
+            },
+            {
+              "pattern": "^to$"
+            },
+            {
+              "pattern": "^from$"
+            },
+            {
+              "pattern": "^nonce$"
+            },
+            {
+              "pattern": "^value$"
+            },
+            {
+              "pattern": "^observe$"
+            },
+            {
+              "pattern": "^observeOneOf$"
+            }
+          ]
+        },
+        "args": {
+          "type": "array",
+          "description": "Operation arguments",
+          "items": {
+            "anyOf": [
+              { "type": "string" },
+              { "type": "number" },
+              {
+                "type": "array",
+                "items": { "anyOf": [{ "type": "string" }, { "type": "number" }] }
+              }
+            ]
+          }
+        }
+      }
+    },
+    "RuleOperation": {
+      "type": "object",
+      "description": "Rule logic operator",
+      "additionalProperties": false,
+      "required": ["method", "args"],
+      "properties": {
+        "method": {
+          "type": "string",
+          "description": "Operation method",
+          "examples": ["all", "beforeBlock"],
+          "oneOf": [
+            {
+              "pattern": "^beforeBlock$"
+            },
+            {
+              "pattern": "^afterBlock$"
+            },
+            {
+              "pattern": "^betweenBlocks$"
+            },
+            {
+              "pattern": "^beforeTimestamp$"
+            },
+            {
+              "pattern": "^afterTimestamp$"
+            },
+            {
+              "pattern": "^betweenTimestamps$"
+            },
+            {
+              "pattern": "^all$"
+            },
+            {
+              "pattern": "^oneOf$"
+            },
+            {
+              "pattern": "^range$"
+            }
+          ]
+        },
+        "args": {
+          "type": "array",
+          "description": "Operation arguments",
+          "items": {
+            "anyOf": [
+              { "type": "string" },
+              { "type": "number" },
+              {
+                "type": "array",
+                "items": { "anyOf": [{ "type": "string" }, { "type": "number" }] }
+              }
+            ]
+          }
+        }
+      }
+    },
+     "TagIdentifier": {
+       "type": "string",
+       "description": "The unique identifier of a tag",
+       "minLength": 1,
+       "maxLength": 10,
+       "pattern": "^[\\w]+$",
+       "examples": ["compound", "stablecoin"]
+     },
+     "TagDefinition": {
+       "type": "object",
+       "description": "Definition of a tag that can be associated with a token via its identifier",
+       "additionalProperties": false,
+       "properties": {
+         "name": {
+           "type": "string",
+           "description": "The name of the tag",
+           "pattern": "^[ \\w]+$",
+           "minLength": 1,
+           "maxLength": 20
+         },
+         "description": {
+           "type": "string",
+           "description": "A user-friendly description of the tag",
+           "pattern": "^[ \\w\\.,:]+$",
+           "minLength": 1,
+           "maxLength": 200
+         }
+       },
+       "required": ["name", "description"],
+       "examples": [
+         {
+           "name": "Stablecoin",
+           "description": "A token with value pegged to another asset"
+         }
+       ]
+     },
+     "Version": {
+       "type": "object",
+       "description": "The version of the set, used in change detection",
+       "examples": [
+         {
+           "major": 1,
+           "minor": 0,
+           "patch": 0
+         }
+       ],
+       "additionalProperties": false,
+       "properties": {
+         "major": {
+           "type": "integer",
+           "description": "The major version of the list. Must be incremented when smart contract are removed from the list or smart contract addresses are changed.",
+           "minimum": 0,
+           "examples": [1, 2]
+         },
+         "minor": {
+           "type": "integer",
+           "description": "The minor version of the list. Must be incremented when smart contracts are added to the set.",
+           "minimum": 0,
+           "examples": [0, 1]
+         },
+         "patch": {
+           "type": "integer",
+           "description": "The patch version of the list. Must be incremented for any changes to the list.",
+           "minimum": 0,
+           "examples": [0, 1]
+         }
+       },
+       "required": ["major", "minor", "patch"]
+     }
+   }
+ }
+ 

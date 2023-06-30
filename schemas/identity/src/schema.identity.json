@@ -1,0 +1,267 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://github.com/web3-sets/lab/blob/main/schemas/schema-smart-contract/src/schema.evm.json",
+  "title": "Web3Sets::Identity Schema",
+  "description": "An set schema for mapping decentralized identifiers, verifiable credentials and public key infrastructure.",
+  "type": "object",
+  "additionalProperties": true,
+  "required": ["id", "object", "version", "entities", "conditions", "rules"],
+  "properties": {
+    "id": {
+      "$ref": "#/definitions/IdentifierDefinition"
+    },
+    "name": {
+      "type": "string",
+      "description": "Name of the set.",
+      "examples": ["District Labs Member Level 5 or Higher"]
+    },
+    "object": {
+      "type": "string",
+      "pattern": "^set:identity$"
+    },
+    "version": {
+      "$ref": "#/definitions/Version"
+    },
+    "keywords": {
+      "type": "array",
+      "description": "Keywords associated with the contents of the list; may be used in list discoverability",
+      "items": {
+        "type": "string",
+        "description": "A keyword to describe the contents of the list",
+        "minLength": 1,
+        "maxLength": 32,
+        "pattern": "^[\\w ]+$",
+        "examples": ["attendance", "education"]
+      },
+      "maxItems": 20,
+      "uniqueItems": true
+    },
+    "entities": {
+      "type": "array",
+      "description": "Entity descriptor for identifiers, credentials and registries.",
+      "items": {
+        "$ref": "#/definitions/EntityDefinition"
+      },
+      "minItems": 0,
+      "maxItems": 32
+    },
+    "conditions": {
+      "type": "array",
+      "description": "Functions and operations applied to Entity properties and state.",
+      "items": {
+        "$ref": "#/definitions/ConditionDefinition"
+      },
+      "minItems": 0,
+      "maxItems": 256
+    },
+    "rules": {
+      "type": "array",
+      "description": "Logic operations for Conditional statements.",
+      "items": {
+        "$ref": "#/definitions/RuleDefinition"
+      },
+      "minItems": 0,
+      "maxItems": 256
+    }
+  },
+  "definitions": {
+    "IdentifierDefinition": {
+      "type": "string",
+      "description": "Identifier",
+      "minLength": 1,
+      "maxLength": 256
+    },
+    "EntityDefinition": {
+      "type": "object",
+      "description": "",
+      "additionalProperties": false,
+      "required": ["id", "schema"],
+      "properties": {
+        "id": {
+          "$ref": "#/definitions/IdentifierDefinition"
+        },
+        "schema": {
+          "type": "string",
+          "description": "The credential schema used to validate the credential.",
+          "examples": ["https://raw.githubusercontent.com/discoxyz/disco-schemas/main/json/MembershipCredential/1-0-0.json"]
+        },
+        "name": {
+          "type": "string",
+          "description": "Entity name.",
+          "examples": ["Membership"]
+        }
+       }
+    },
+    "ConditionDefinition": {
+     "type": "object",
+     "description": "Web3Set::Identity Condition(s)",
+     "additionalProperties": false,
+     "required": ["id", "eid", "operations"],
+     "properties": {
+       "id": {
+         "$ref": "#/definitions/IdentifierDefinition"
+       },
+       "eid": {
+         "$ref": "#/definitions/IdentifierDefinition"
+       },
+       "operations": {
+         "type": "array",
+         "description": "Operations applied to Entity artifact properties and state",
+         "items": {
+           "$ref": "#/definitions/ConditionOperation"
+         }
+       }
+     }
+   },
+   "RuleDefinition": {
+     "type": "object",
+     "description": "",
+     "additionalProperties": false,
+     "required": ["id", "operations"],
+     "properties": {
+       "id": {
+         "$ref": "#/definitions/IdentifierDefinition"
+       },
+      "root": {
+        "type": "boolean",
+        "description": "A set must have at least one root rule.",
+        "examples": [true]
+      },
+      "operations": {
+        "type": "array",
+        "description": "Operations applied to conditions and other rules",
+        "items": {
+          "$ref": "#/definitions/RuleOperation"
+        }
+      }
+     }
+   },
+   "ConditionOperation": {
+     "type": "object",
+     "description": "Logic operators for in a Condition",
+     "additionalProperties": false,
+     "required": ["method", "args"],
+     "properties": {
+       "method": {
+         "type": "string",
+         "description": "Operation method",
+         "examples": ["issuedBy"],
+         "oneOf": [
+          {
+            "pattern": "^issuedBy$"
+          },
+          {
+            "pattern": "^issuedByOneOf$"
+          },
+          {
+            "pattern": "^issuedBefore$"
+          },
+          {
+            "pattern": "^issuedAfter$"
+          },
+          {
+            "pattern": "^expirationBefore$"
+          },
+          {
+            "pattern": "^expirationAfter$"
+          },
+          {
+            "pattern": "^observe$"
+          },
+          {
+            "pattern": "^observeOneOf$"
+          }
+         ]
+       },
+       "args": {
+         "type": "array",
+         "description": "Operation arguments",
+         "items": {
+           "anyOf": [
+             { "type": "string" },
+             { "type": "number" },
+             {
+               "type": "array",
+               "items": { "anyOf": [{ "type": "string" }, { "type": "number" }] }
+             }
+           ]
+         }
+       }
+     }
+   },
+   "RuleOperation": {
+     "type": "object",
+     "description": "Rule logic operator",
+     "additionalProperties": false,
+     "required": ["method", "args"],
+     "properties": {
+       "method": {
+         "type": "string",
+         "description": "Operation method",
+         "examples": ["all", "beforeBlock"],
+         "oneOf": [
+           {
+             "pattern": "^all$"
+           },
+           {
+             "pattern": "^oneOf$"
+           },
+           {
+             "pattern": "^range$"
+           },
+           {
+             "pattern": "^count$"
+           }
+         ]
+       },
+       "args": {
+         "type": "array",
+         "description": "Operation arguments",
+         "items": {
+           "anyOf": [
+             { "type": "string" },
+             { "type": "number" },
+             {
+               "type": "array",
+               "items": { "anyOf": [{ "type": "string" }, { "type": "number" }] }
+             }
+           ]
+         }
+       }
+     }
+   },
+    "Version": {
+      "type": "object",
+      "description": "The version of the set, used in change detection",
+      "examples": [
+        {
+          "major": 1,
+          "minor": 0,
+          "patch": 0
+        }
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "major": {
+          "type": "integer",
+          "description": "The major version of the list. Must be incremented when smart contract are removed from the list or smart contract addresses are changed.",
+          "minimum": 0,
+          "examples": [1, 2]
+        },
+        "minor": {
+          "type": "integer",
+          "description": "The minor version of the list. Must be incremented when smart contracts are added to the set.",
+          "minimum": 0,
+          "examples": [0, 1]
+        },
+        "patch": {
+          "type": "integer",
+          "description": "The patch version of the list. Must be incremented for any changes to the list.",
+          "minimum": 0,
+          "examples": [0, 1]
+        }
+      },
+      "required": ["major", "minor", "patch"]
+    }
+  }
+}

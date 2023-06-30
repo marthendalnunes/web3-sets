@@ -1,0 +1,22 @@
+{
+  "index": "Introduction",
+  "overview": {
+    "title": "Overview"
+  },
+  "architecture": {
+    "title": "Architecture"
+  },
+  "schemas": {
+    "title": "Schemas"
+  },
+  "runtime": {
+    "title": "Runtime"
+  },
+  "examples": {
+    "title": "Examples"
+  },
+  "backlog": {
+    "title": "Backlog",
+    "type": "page"
+  }
+}

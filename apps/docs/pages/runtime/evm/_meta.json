@@ -1,0 +1,11 @@
+{
+  "inputs": {
+    "title": "Inputs"
+  },
+  "mutations": {
+    "title": "Mutations"
+  },
+  "outputs": {
+    "title": "Outputs"
+  }
+}

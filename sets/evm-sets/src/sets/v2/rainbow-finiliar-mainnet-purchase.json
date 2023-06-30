@@ -1,0 +1,46 @@
+{
+	"id": "set:rainbow:finiliar:mainnet:purchase",
+	"object": "set:evm",
+	"name": "Mint Finiliar NFT by Rainbow",
+	"description": "Mint the Finiliar NFT by Rainbow",
+	"keywords": ["defi", "rainbow"],
+	"version": {
+		"major": 0,
+		"minor": 0,
+		"patch": 0
+	},
+	"entities": [
+		{
+			"id": "entity:rainbow:finiliar",
+			"chainId": 1,
+			"address": "0xc5f18a7bf825c2b0433102da5bc79c9edfc3fa89",
+			"abi": "ipfs://QmWesVTzwwEUxaHkf3kbNWWPKoiFsxTxJCsubVH9V1VEeW"
+		}
+	],
+	"conditions": [
+		{
+			"id": "condition:purchase",
+			"eid": "entity:rainbow:finiliar",
+			"type": "transaction",
+			"signature": "purchase(uint256)",
+			"operations": [
+				{
+					"method": "observe",
+					"args": [0, "gte", "1"]
+				}
+			]
+		}
+	],
+	"rules": [
+		{
+			"id": "rule:all",
+			"root": true,
+			"operations": [
+				{
+					"method": "all",
+					"args": ["condition:purchase"]
+				}
+			]
+		}
+	]
+}

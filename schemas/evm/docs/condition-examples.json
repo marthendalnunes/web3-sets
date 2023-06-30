@@ -1,0 +1,23 @@
+
+
+```json
+"conditions": [
+    {
+        "id": "condition:0x79bc8bd53244bc8a9c8c27509a2d573650a83373:depositTo:gte:100000000",
+        "eid": "0x79bc8bd53244bc8a9c8c27509a2d573650a83373",
+        "name": "PoolTogether Optimism Deposit over 1 USDC",
+        "type": "transaction",
+        "signature": "depositTo(address,uint256)",
+        "values": [
+            {
+            "index": 1,
+            "type": "bignumber",
+            "condition": "gte",
+            "value": "10000000"
+            }
+        ],
+        "operations": ["afterBlock", "from"],
+        "args": ["420", "$from"]
+    }
+],
+```
