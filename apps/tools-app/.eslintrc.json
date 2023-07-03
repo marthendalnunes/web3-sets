@@ -13,7 +13,7 @@
   },
   "rules": {
     "prettier/prettier": [
-      "error",
+      "warning",
       {
         "singleQuote": true,
         "endOfLine": "auto"
