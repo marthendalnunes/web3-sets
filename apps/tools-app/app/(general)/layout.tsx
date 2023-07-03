@@ -11,7 +11,10 @@ export default function GeneralLayout({ children }: { children: ReactNode }) {
     <>
       <div className="flex min-h-[100vh] flex-col pb-10 lg:pb-12">
         <Header />
-        <main className="my-20 md:px-10 lg:my-32">{children}</main>
+        <main className="my-20 md:px-10 lg:my-32">
+          {children}
+          <Toaster />
+        </main>
         <div className="fixed bottom-6 left-6">
           <NetworkStatus />
         </div>
@@ -21,7 +24,6 @@ export default function GeneralLayout({ children }: { children: ReactNode }) {
         <Footer />
       </div>
       {/* TODO: Add position controls */}
-      <Toaster />
     </>
   )
 }

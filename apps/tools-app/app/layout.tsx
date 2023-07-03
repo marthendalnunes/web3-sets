@@ -8,6 +8,7 @@ import { Inter as FontSans } from 'next/font/google'
 import localFont from 'next/font/local'
 
 import RootProvider from '@/components/providers/root-provider'
+import { Toaster } from '@/components/ui/toaster'
 import { siteConfig } from '@/config/site'
 import { env } from '@/env.mjs'
 import { cn } from '@/lib/utils'

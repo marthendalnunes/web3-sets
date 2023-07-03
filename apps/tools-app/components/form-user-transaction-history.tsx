@@ -3,41 +3,19 @@ import { useState } from 'react'
 import { CopyToClipboard } from 'react-copy-to-clipboard'
 import { FieldValues, useForm } from 'react-hook-form'
 
-import { WalletConnect } from '@/components/blockchain/wallet-connect'
-import { IsWalletConnected } from '@/components/shared/is-wallet-connected'
-import { IsWalletDisconnected } from '@/components/shared/is-wallet-disconnected'
 import { appEtherscanAccountTransactions } from '@/integrations/etherscan/actions/etherscan-account-transactions/client'
+import { downloadFile } from '@/lib/utils/download-file'
 
 import { ScrollArea } from './ui/scroll-area'
-
-const downloadFile = ({ data, fileName, fileType }: any) => {
-  // Create a blob with the data we want to download as a file
-  const blob = new Blob([data], { type: fileType })
-  // Create an anchor element and dispatch a click event on it
-  // to trigger a download
-  const a = document.createElement('a')
-  a.download = fileName
-  a.href = window.URL.createObjectURL(blob)
-  const clickEvt = new MouseEvent('click', {
-    view: window,
-    bubbles: true,
-    cancelable: true,
-  })
-  a.dispatchEvent(clickEvt)
-  a.remove()
-}
 
 export function FormUserTransactionHistory() {
   const { register, handleSubmit } = useForm()
   const [transactions, setTransactions] = useState<any | undefined>(undefined)
   const onSubmit = async (data: FieldValues) => {
-    console.log(data)
     const transaction_history = await appEtherscanAccountTransactions({
       address: data.address,
       chainId: data.chainId || 1,
     })
-    console.log(transaction_history)
-
     setTransactions(transaction_history?.transactions)
   }
 
@@ -61,7 +39,7 @@ export function FormUserTransactionHistory() {
         <option value="137">Polygon</option>
       </select>
       <button className="btn btn-primary" type="submit">
-        Fetch User Transaction History
+        Submit
       </button>
       {transactions && (
         <>
@@ -116,23 +94,5 @@ export function FormUserTransactionHistory() {
         </>
       )}
     </form>
-  )
-}
-
-export function UserTransactionHistory() {
-  return (
-    <div className="card w-full">
-      <IsWalletConnected>
-        <div className="w-full">
-          <FormUserTransactionHistory />
-          <hr className="my-4" />
-        </div>
-      </IsWalletConnected>
-      <IsWalletDisconnected>
-        <div className="flex items-center justify-center gap-10">
-          <WalletConnect />
-        </div>
-      </IsWalletDisconnected>
-    </div>
   )
 }
