@@ -36,6 +36,7 @@ export function FormUserTransactionHistory() {
       address: data.address,
       chainId: data.chainId || 1,
     })
+    console.log(transaction_history)
 
     setTransactions(transaction_history?.transactions)
   }

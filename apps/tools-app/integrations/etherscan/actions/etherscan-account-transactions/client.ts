@@ -8,7 +8,7 @@ export async function appEtherscanAccountTransactions(params?: { chainId: number
 }> {
   try {
     const res = await fetch(`/api/etherscan/account/transactions${params ? `?chainId=${params.chainId}&address=${params.address}` : ''}`)
-    const data = res.json()
+    const data = await res.json()
     return {
       transactions: data.transactions,
       address: params.address,
