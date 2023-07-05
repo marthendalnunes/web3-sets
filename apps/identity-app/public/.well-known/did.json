@@ -1,0 +1,27 @@
+{
+  "@context": [
+    "https://www.w3.org/ns/did/v1",
+    {
+      "Ed25519VerificationKey2018": "https://w3id.org/security#Ed25519VerificationKey2018",
+      "publicKeyJwk": {
+        "@id": "https://w3id.org/security#publicKeyJwk",
+        "@type": "@json"
+      }
+    }
+  ],
+  "id": "did:web:identity.web3sets.app",
+  "verificationMethod": [
+    {
+      "id": "did:web:identity.web3sets.app#owner",
+      "type": "Ed25519VerificationKey2018",
+      "controller": "did:web:identity.web3sets.app",
+      "publicKeyJwk": {
+        "kty": "OKP",
+        "crv": "Ed25519",
+        "x": "jGUmnpAi9yShjLTNXTmKSdynxKUhM6XSEpPiyKsYEqo"
+      }
+    }
+  ],
+  "authentication": ["did:web:identity.web3sets.app#owner"],
+  "assertionMethod": ["did:web:identity.web3sets.app#owner"]
+}
