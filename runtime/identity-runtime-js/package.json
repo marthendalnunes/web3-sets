@@ -11,7 +11,9 @@
   "main": "dist/index.js",
   "module": "dist/index.js",
   "typings": "dist/index.d.ts",
-  "files": ["dist"],
+  "files": [
+    "dist"
+  ],
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
@@ -43,15 +45,19 @@
     "test:ci": "CI=true vitest --coverage --no-threads"
   },
   "dependencies": {
-    "@ethersproject/abi": "^5.5.0",
-    "@ethersproject/bignumber": "^5.5.0",
-    "@ethersproject/providers": "^5.5.1",
-    "@ethersproject/transactions": "^5.7.0",
     "@types/dedent": "^0.7.0",
+    "@veramo/core": "^5.2.0",
+    "@veramo/credential-w3c": "^5.2.0",
+    "@veramo/data-store": "^5.2.0",
+    "@veramo/did-manager": "^5.1.2",
+    "@veramo/did-provider-ethr": "^5.1.2",
+    "@veramo/did-resolver": "^5.2.0",
+    "@veramo/key-manager": "^5.1.2",
+    "@veramo/kms-local": "^5.1.2",
     "abitype": "^0.8.3",
+    "ethr-did-resolver": "^8.0.0",
     "object-path": "^0.11.8",
-    "siwe": "^1.1.6",
-    "viem": "^0.3.24",
+    "web-did-resolver": "^2.0.27",
     "zod": "^3.21.4"
   },
   "devDependencies": {
@@ -73,7 +79,9 @@
     "vitest": "~0.32.2"
   },
   "tsup": {
-    "entry": ["src/index.ts"]
+    "entry": [
+      "src/index.ts"
+    ]
   },
   "simple-git-hooks": {
     "pre-commit": "pnpm format"
