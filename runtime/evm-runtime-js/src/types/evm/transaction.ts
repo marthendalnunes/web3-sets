@@ -2,6 +2,7 @@ import { z } from 'zod'
 
 export const Transaction = z.object({
   blockHash: z.string().nullable(),
+  timeStamp: z.string().nullable(),
   blockNumber: z.string().nullable(),
   hash: z.string(),
   transactionIndex: z.string().nullable(),

@@ -1,44 +1,62 @@
 import { Transaction } from '../types'
 import { ConditionOperation } from '../types/set/condition'
-import { conditionOperationTransactionObserve } from './operations/condition-operation-transaction-observe'
+import {
+  conditionOperationTransactionAfterBlock,
+  conditionOperationTransactionAfterTimestamp,
+  conditionOperationTransactionBeforeBlock,
+  conditionOperationTransactionBeforeTimestamp,
+  conditionOperationTransactionBetweenBlocks,
+  conditionOperationTransactionBetweenTimestamps,
+  conditionOperationTransactionFrom,
+  conditionOperationTransactionNonce,
+  conditionOperationTransactionObserve,
+  conditionOperationTransactionTo,
+  conditionOperationTransactionValue,
+} from './operations'
 
 export function compareConditionOperationToDecodedTransactionData(
   transaction: Transaction,
   operation: ConditionOperation,
-): Boolean {
+): boolean {
   switch (operation.method) {
     case 'observe': {
       return conditionOperationTransactionObserve(transaction, operation)
     }
     case 'beforeBlock': {
-      return false
+      return conditionOperationTransactionBeforeBlock(transaction, operation)
     }
     case 'afterBlock': {
-      return false
+      return conditionOperationTransactionAfterBlock(transaction, operation)
     }
     case 'betweenBlocks': {
-      return false
+      return conditionOperationTransactionBetweenBlocks(transaction, operation)
     }
     case 'beforeTimestamp': {
-      return false
+      return conditionOperationTransactionBeforeTimestamp(
+        transaction,
+        operation,
+      )
     }
     case 'afterTimestamp': {
-      return false
+      return conditionOperationTransactionAfterTimestamp(transaction, operation)
     }
     case 'betweenTimestamps': {
-      return false
+      return conditionOperationTransactionBetweenTimestamps(
+        transaction,
+        operation,
+      )
     }
     case 'to': {
-      return false
+      return conditionOperationTransactionTo(transaction, operation)
     }
     case 'from': {
-      return false
+      return conditionOperationTransactionFrom(transaction, operation)
     }
     case 'value': {
-      return false
+      return conditionOperationTransactionValue(transaction, operation)
     }
     case 'nonce': {
-      return false
+      return conditionOperationTransactionNonce(transaction, operation)
     }
     default: {
       throw new Error(`Unsupported operation method: ${operation.method}`)
