@@ -1,5 +1,6 @@
 import { Transaction } from 'src/types'
 import { ConditionOperation } from 'src/types/set/condition'
+import { isStringOrNumber } from 'src/utils/is-string-or-number'
 
 /**
  * @name conditionOperationTransactionAfterTimestamp
@@ -17,6 +18,9 @@ export function conditionOperationTransactionAfterTimestamp(
     throw new Error('Only afterTimestamp operations are supported')
 
   if (!transaction.timeStamp) throw new Error('Transaction has no timeStamp')
+
+  if (operation.args.length !== 1 || !isStringOrNumber(operation.args[0]))
+    throw new Error('Invalid operation arguments')
 
   return BigInt(transaction.timeStamp) > BigInt(operation.args[0])
 }

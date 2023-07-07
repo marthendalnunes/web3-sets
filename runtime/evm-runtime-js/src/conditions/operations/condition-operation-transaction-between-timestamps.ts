@@ -1,5 +1,6 @@
 import { Transaction } from 'src/types'
 import { ConditionOperation } from 'src/types/set/condition'
+import { isStringOrNumber } from 'src/utils/is-string-or-number'
 
 /**
  * @name conditionOperationTransactionBetweenTimestamps
@@ -17,6 +18,9 @@ export function conditionOperationTransactionBetweenTimestamps(
     throw new Error('Only betweenTimestamps operations are supported')
 
   if (!transaction.timeStamp) throw new Error('Transaction has no timeStamp')
+
+  if (operation.args.length !== 2 || !isStringOrNumber(operation.args))
+    throw new Error('Invalid operation arguments')
 
   const timeStamp = BigInt(transaction.timeStamp)
   const lowerTimestampLimit = BigInt(operation.args[0])

@@ -14,7 +14,7 @@ export function compareBigNumber(
       return artifact_value <= operation_argument
     case 'eq':
       return artifact_value === operation_argument
-    case 'neq':
+    case '!eq':
       return artifact_value !== operation_argument
     default:
       return false

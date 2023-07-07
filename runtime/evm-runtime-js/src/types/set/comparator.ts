@@ -2,7 +2,7 @@ import { z } from 'zod'
 
 export const Comparator = z.enum([
   'eq',
-  'neq',
+  '!eq',
   'gt',
   'gte',
   'lt',
