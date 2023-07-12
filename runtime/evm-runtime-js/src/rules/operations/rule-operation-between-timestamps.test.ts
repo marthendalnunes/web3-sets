@@ -77,6 +77,30 @@ describe('ruleOperationBetweenTimestamps', () => {
     ).toThrow('Invalid timestamp range')
   })
 
+  it('Should throw if the reference is invalid', () => {
+    expect(() =>
+      ruleOperationBetweenTimestamps(
+        {
+          method: 'betweenTimestamps',
+          args: [
+            '1659754991',
+            '1667475999',
+            [
+              'wrong-reference:depositTo:gte:100000000',
+              'condition:depositToAndDelegate:gte:100000000',
+            ],
+          ],
+        },
+        {
+          entityResults: mockEntityResults,
+          artifacts: mockArtifacts,
+        },
+      ),
+    ).toThrow(
+      'wrong-reference:depositTo:gte:100000000 is not a valid reference',
+    )
+  })
+
   it('Should return true if the timestamp is between the reference timestamp range', () => {
     expect(
       ruleOperationBetweenTimestamps(

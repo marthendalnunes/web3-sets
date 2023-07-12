@@ -62,6 +62,29 @@ describe('ruleOperationBeforeBlock', () => {
     ).toThrow('Invalid operation arguments')
   })
 
+  it('Should throw if the reference is invalid', () => {
+    expect(() =>
+      ruleOperationBeforeBlock(
+        {
+          method: 'beforeBlock',
+          args: [
+            '34435499',
+            [
+              'wrong-reference:depositTo:gte:100000000',
+              'condition:depositToAndDelegate:gte:100000000',
+            ],
+          ],
+        },
+        {
+          entityResults: mockEntityResults,
+          artifacts: mockArtifacts,
+        },
+      ),
+    ).toThrow(
+      'wrong-reference:depositTo:gte:100000000 is not a valid reference',
+    )
+  })
+
   it('Should return true if the block number is less than the reference block number', () => {
     expect(
       ruleOperationBeforeBlock(

@@ -62,6 +62,29 @@ describe('ruleOperationAfterTimestamp', () => {
     ).toThrow('Invalid operation arguments')
   })
 
+  it('Should throw if the reference is invalid', () => {
+    expect(() =>
+      ruleOperationAfterTimestamp(
+        {
+          method: 'afterTimestamp',
+          args: [
+            '1659754991',
+            [
+              'condition:depositToAndDelegate:gte:100000000',
+              'wrong-reference:depositTo:gte:100000000',
+            ],
+          ],
+        },
+        {
+          entityResults: mockEntityResults,
+          artifacts: mockArtifacts,
+        },
+      ),
+    ).toThrow(
+      'wrong-reference:depositTo:gte:100000000 is not a valid reference',
+    )
+  })
+
   it('Should return true if the transaction timestamp is greater than the rule timestamp', () => {
     expect(
       ruleOperationAfterTimestamp(

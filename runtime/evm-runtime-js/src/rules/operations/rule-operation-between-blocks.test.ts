@@ -77,6 +77,30 @@ describe('ruleOperationBetweenBlocks', () => {
     ).toThrow('Invalid block range')
   })
 
+  it('Should throw if the reference is invalid', () => {
+    expect(() =>
+      ruleOperationBetweenBlocks(
+        {
+          method: 'betweenBlocks',
+          args: [
+            '17999872',
+            '33969345',
+            [
+              'wrong-reference:depositTo:gte:100000000',
+              'condition:depositToAndDelegate:gte:100000000',
+            ],
+          ],
+        },
+        {
+          artifacts: mockArtifacts,
+          entityResults: mockEntityResults,
+        },
+      ),
+    ).toThrow(
+      'wrong-reference:depositTo:gte:100000000 is not a valid reference',
+    )
+  })
+
   it('Should return true if the block number is in between reference block range', () => {
     expect(
       ruleOperationBetweenBlocks(

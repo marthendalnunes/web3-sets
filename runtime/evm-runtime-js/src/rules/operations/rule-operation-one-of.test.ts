@@ -36,6 +36,23 @@ describe('ruleOperationOneOf', () => {
     ).toThrow('Could not find condition with cid condition:wrong:reference')
   })
 
+  it('Should throw if the reference is invalid', () => {
+    expect(() =>
+      ruleOperationOneOf(
+        {
+          method: 'oneOf',
+          args: ['wrong-reference:depositTo:gte:100000000'],
+        },
+        {
+          entityResults: mockEntityResults,
+          rules: [],
+        },
+      ),
+    ).toThrow(
+      'wrong-reference:depositTo:gte:100000000 is not a valid reference',
+    )
+  })
+
   it('Should return true if one of the conditions is true', () => {
     expect(
       ruleOperationOneOf(

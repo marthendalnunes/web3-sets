@@ -62,6 +62,23 @@ describe('ruleOperationAfterBlock', () => {
     ).toThrow('Invalid operation arguments')
   })
 
+  it('Should throw if the reference is invalid', () => {
+    expect(() =>
+      ruleOperationAfterBlock(
+        {
+          method: 'afterBlock',
+          args: ['17999409', ['wrong-reference:depositTo:gte:100000000']],
+        },
+        {
+          entityResults: mockEntityResults,
+          artifacts: mockArtifacts,
+        },
+      ),
+    ).toThrow(
+      'wrong-reference:depositTo:gte:100000000 is not a valid reference',
+    )
+  })
+
   it('Should return true if the block number is after the specified block', () => {
     expect(
       ruleOperationAfterBlock(

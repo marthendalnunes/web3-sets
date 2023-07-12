@@ -39,6 +39,26 @@ describe('ruleOperationAll', () => {
     ).toThrow('Could not find condition with cid condition:wrong:reference')
   })
 
+  it('Should throw if the reference is invalid', () => {
+    expect(() =>
+      ruleOperationAll(
+        {
+          method: 'all',
+          args: [
+            'condition:depositTo:gte:100000000',
+            'wrong-reference:depositTo:gte:100000000',
+          ],
+        },
+        {
+          entityResults: mockEntityResults,
+          rules: [],
+        },
+      ),
+    ).toThrow(
+      'wrong-reference:depositTo:gte:100000000 is not a valid reference',
+    )
+  })
+
   it('Should return true if all the conditions are true', () => {
     expect(
       ruleOperationAll(
