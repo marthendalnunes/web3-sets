@@ -1,3 +1,5 @@
+import { Comparator } from '../set/comparator'
+import { isAddress } from 'viem'
 import { z } from 'zod'
 
 export const ConditionOperation = z.object({
@@ -31,3 +33,38 @@ export const Condition = z.object({
 })
 
 export type Condition = z.infer<typeof Condition>
+
+const StringOrNumber = z.union([z.string(), z.number()])
+const Address = z.string().refine(isAddress)
+
+export const ConditionOperationObserveArgs = z.tuple([
+  z.number(),
+  Comparator,
+  StringOrNumber,
+])
+
+export const ConditionOperationBeforeBlockArgs = z.tuple([StringOrNumber])
+
+export const ConditionOperationAfterBlockArgs = z.tuple([StringOrNumber])
+
+export const ConditionOperationBetweenBlocksArgs = z.tuple([
+  StringOrNumber,
+  StringOrNumber,
+])
+
+export const ConditionOperationBeforeTimestampArgs = z.tuple([StringOrNumber])
+
+export const ConditionOperationAfterTimestampArgs = z.tuple([StringOrNumber])
+
+export const ConditionOperationBetweenTimestampsArgs = z.tuple([
+  StringOrNumber,
+  StringOrNumber,
+])
+
+export const ConditionOperationToArgs = z.tuple([Address])
+
+export const ConditionOperationFromArgs = z.tuple([Address])
+
+export const ConditionOperationValueArgs = z.tuple([Comparator, StringOrNumber])
+
+export const ConditionOperationNonceArgs = z.tuple([Comparator, StringOrNumber])

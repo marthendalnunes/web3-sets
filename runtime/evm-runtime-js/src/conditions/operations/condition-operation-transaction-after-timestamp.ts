@@ -1,6 +1,8 @@
 import { Transaction } from 'src/types'
-import { ConditionOperation } from 'src/types/set/condition'
-import { isStringOrNumber } from 'src/utils/is-string-or-number'
+import {
+  ConditionOperation,
+  ConditionOperationAfterTimestampArgs,
+} from 'src/types/set/condition'
 
 /**
  * @name conditionOperationTransactionAfterTimestamp
@@ -19,8 +21,12 @@ export function conditionOperationTransactionAfterTimestamp(
 
   if (!transaction.timeStamp) throw new Error('Transaction has no timeStamp')
 
-  if (operation.args.length !== 1 || !isStringOrNumber(operation.args[0]))
-    throw new Error('Invalid operation arguments')
+  const safeArgs = ConditionOperationAfterTimestampArgs.safeParse(
+    operation.args,
+  )
+  if (!safeArgs.success) throw new Error('Invalid operation arguments')
 
-  return BigInt(transaction.timeStamp) > BigInt(operation.args[0])
+  const [timeStamp] = safeArgs.data
+
+  return BigInt(transaction.timeStamp) > BigInt(timeStamp)
 }

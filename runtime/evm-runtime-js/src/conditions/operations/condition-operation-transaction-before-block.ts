@@ -1,6 +1,6 @@
 import { Transaction } from 'src/types'
 import { ConditionOperation } from 'src/types/set/condition'
-import { isStringOrNumber } from 'src/utils/is-string-or-number'
+import { ConditionOperationBeforeBlockArgs } from 'src/types/set/condition'
 
 /**
  * @name conditionOperationTransactionBeforeBlock
@@ -20,8 +20,10 @@ export function conditionOperationTransactionBeforeBlock(
   if (!transaction.blockNumber)
     throw new Error('Transaction has no blockNumber')
 
-  if (operation.args.length !== 1 || !isStringOrNumber(operation.args[0]))
-    throw new Error('Invalid operation arguments')
+  const safeArgs = ConditionOperationBeforeBlockArgs.safeParse(operation.args)
+  if (!safeArgs.success) throw new Error('Invalid operation arguments')
 
-  return BigInt(transaction.blockNumber) < BigInt(operation.args[0])
+  const [blockNumber] = safeArgs.data
+
+  return BigInt(transaction.blockNumber) < BigInt(blockNumber)
 }

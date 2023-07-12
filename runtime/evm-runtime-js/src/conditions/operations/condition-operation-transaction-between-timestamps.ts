@@ -1,6 +1,8 @@
 import { Transaction } from 'src/types'
-import { ConditionOperation } from 'src/types/set/condition'
-import { isStringOrNumber } from 'src/utils/is-string-or-number'
+import {
+  ConditionOperation,
+  ConditionOperationBetweenTimestampsArgs,
+} from 'src/types/set/condition'
 
 /**
  * @name conditionOperationTransactionBetweenTimestamps
@@ -19,15 +21,22 @@ export function conditionOperationTransactionBetweenTimestamps(
 
   if (!transaction.timeStamp) throw new Error('Transaction has no timeStamp')
 
-  if (operation.args.length !== 2 || !isStringOrNumber(operation.args))
-    throw new Error('Invalid operation arguments')
+  const safeArgs = ConditionOperationBetweenTimestampsArgs.safeParse(
+    operation.args,
+  )
+  if (!safeArgs.success) throw new Error('Invalid operation arguments')
 
-  const timeStamp = BigInt(transaction.timeStamp)
-  const lowerTimestampLimit = BigInt(operation.args[0])
-  const upperTimestampLimit = BigInt(operation.args[1])
+  const [lowerTimestampLimit, upperTimestampLimit] = safeArgs.data
+
+  const bigIntTimeStamp = BigInt(transaction.timeStamp)
+  const bigIntLowerTimestampLimit = BigInt(lowerTimestampLimit)
+  const bigIntUpperTimestampLimit = BigInt(upperTimestampLimit)
 
   if (lowerTimestampLimit >= upperTimestampLimit)
     throw new Error('Invalid timestamp range')
 
-  return timeStamp > lowerTimestampLimit && timeStamp < upperTimestampLimit
+  return (
+    bigIntTimeStamp > bigIntLowerTimestampLimit &&
+    bigIntTimeStamp < bigIntUpperTimestampLimit
+  )
 }

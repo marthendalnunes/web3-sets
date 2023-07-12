@@ -1,8 +1,4 @@
-import {
-  ConditionOperationResults,
-  ConditionResult,
-  EntityResults,
-} from 'src/types'
+import { ConditionResult, EntityResults } from 'src/types'
 
 export function flattenConditionOperationResults(
   entities: EntityResults[],

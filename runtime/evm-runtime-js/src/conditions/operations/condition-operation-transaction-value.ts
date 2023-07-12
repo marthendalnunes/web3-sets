@@ -1,8 +1,9 @@
 import { compareBigNumber } from 'src/comparators/compare-big-number'
 import { Transaction } from 'src/types'
-import { ConditionOperation } from 'src/types/set/condition'
-import { isStringOrNumber } from 'src/utils/is-string-or-number'
-import { isValidComparator } from 'src/utils/is-valid-comparator'
+import {
+  ConditionOperation,
+  ConditionOperationValueArgs,
+} from 'src/types/set/condition'
 
 /**
  * @name conditionOperationTransactionValue
@@ -19,16 +20,10 @@ export function conditionOperationTransactionValue(
   if (operation.method !== 'value')
     throw new Error('Only value operations are supported')
 
-  if (
-    operation.args.length !== 2 ||
-    !isValidComparator(operation.args[0]) ||
-    !isStringOrNumber(operation.args[1])
-  )
-    throw new Error('Invalid operation arguments')
+  const safeArgs = ConditionOperationValueArgs.safeParse(operation.args)
+  if (!safeArgs.success) throw new Error('Invalid operation arguments')
 
-  return compareBigNumber(
-    operation.args[0],
-    BigInt(operation.args[1]),
-    BigInt(transaction.value),
-  )
+  const [comparator, value] = safeArgs.data
+
+  return compareBigNumber(comparator, BigInt(value), BigInt(transaction.value))
 }

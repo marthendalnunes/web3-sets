@@ -1,6 +1,8 @@
 import { Transaction } from 'src/types'
-import { ConditionOperation } from 'src/types/set/condition'
-import { isAddress } from 'viem'
+import {
+  ConditionOperation,
+  ConditionOperationFromArgs,
+} from 'src/types/set/condition'
 
 /**
  * @name conditionOperationTransactionFrom
@@ -17,8 +19,10 @@ export function conditionOperationTransactionFrom(
   if (operation.method !== 'from')
     throw new Error('Only from operations are supported')
 
-  if (operation.args.length !== 1 || !isAddress(operation.args[0]))
-    throw new Error('Invalid operation arguments')
+  const safeArgs = ConditionOperationFromArgs.safeParse(operation.args)
+  if (!safeArgs.success) throw new Error('Invalid operation arguments')
 
-  return transaction.from.toLowerCase() === operation.args[0].toLowerCase()
+  const [from] = safeArgs.data
+
+  return transaction.from.toLowerCase() === from.toLowerCase()
 }

@@ -1,6 +1,8 @@
 import { Transaction } from 'src/types'
-import { ConditionOperation } from 'src/types/set/condition'
-import { isStringOrNumber } from 'src/utils/is-string-or-number'
+import {
+  ConditionOperation,
+  ConditionOperationBetweenBlocksArgs,
+} from 'src/types/set/condition'
 
 /**
  * @name conditionOperationTransactionBetweenBlocks
@@ -20,14 +22,19 @@ export function conditionOperationTransactionBetweenBlocks(
   if (!transaction.blockNumber)
     throw new Error('Transaction has no blockNumber')
 
-  if (operation.args.length !== 2 || !isStringOrNumber(operation.args))
-    throw new Error('Invalid operation arguments')
+  const safeArgs = ConditionOperationBetweenBlocksArgs.safeParse(operation.args)
+  if (!safeArgs.success) throw new Error('Invalid operation arguments')
 
-  const blockNumber = BigInt(transaction.blockNumber)
-  const lowerBlockLimit = BigInt(operation.args[0])
-  const upperBlockLimit = BigInt(operation.args[1])
+  const [lowerBlockLimit, upperBlockLimit] = safeArgs.data
+
+  const bigIntBlockNumber = BigInt(transaction.blockNumber)
+  const bigIntLowerBlockLimit = BigInt(lowerBlockLimit)
+  const bigIntUpperBlockLimit = BigInt(upperBlockLimit)
 
   if (lowerBlockLimit >= upperBlockLimit) throw new Error('Invalid block range')
 
-  return blockNumber > lowerBlockLimit && blockNumber < upperBlockLimit
+  return (
+    bigIntBlockNumber > bigIntLowerBlockLimit &&
+    bigIntBlockNumber < bigIntUpperBlockLimit
+  )
 }

@@ -23,3 +23,44 @@ export const Rule = z.object({
 })
 
 export type Rule = z.infer<typeof Rule>
+
+const StringOrNumber = z.union([z.string(), z.number()])
+const StringArray = z.string().array()
+
+export const RuleOperationAllArgs = StringArray
+
+export const RuleOperationOneOfArgs = StringArray
+
+export const RuleOperationRangeArgs = z.array(StringArray)
+
+export const RuleOperationBeforeBlockArgs = z.tuple([
+  StringOrNumber,
+  StringArray,
+])
+
+export const RuleOperationAfterBlockArgs = z.tuple([
+  StringOrNumber,
+  StringArray,
+])
+
+export const RuleOperationBetweenBlocksArgs = z.tuple([
+  StringOrNumber,
+  StringOrNumber,
+  StringArray,
+])
+
+export const RuleOperationBeforeTimestampArgs = z.tuple([
+  StringOrNumber,
+  StringArray,
+])
+
+export const RuleOperationAfterTimestampArgs = z.tuple([
+  StringOrNumber,
+  StringArray,
+])
+
+export const RuleOperationBetweenTimestampsArgs = z.tuple([
+  StringOrNumber,
+  StringOrNumber,
+  StringArray,
+])

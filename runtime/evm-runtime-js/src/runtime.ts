@@ -34,6 +34,7 @@ export async function runtime({
   const rule_condition_operations_applied = applyRuleOperations(
     entity_condition_operations_applied,
     set_hydrated_with_artifacts.rules,
+    artifacts,
   )
 
   // 7. Return the results
