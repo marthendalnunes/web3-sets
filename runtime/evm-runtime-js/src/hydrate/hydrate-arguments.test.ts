@@ -1,8 +1,17 @@
-import { hydrateArguments } from './hydrate-arguments'
+import { hydrateArguments, searchReplaceArgument } from './hydrate-arguments'
 import { EVMSet } from 'src/types'
 import { describe, expect, it } from 'vitest'
 
 describe('hydrateArguments', () => {
+  it('should throw if hydrated arguments set is not of type EVMSet', () => {
+    expect(() =>
+      hydrateArguments({} as EVMSet, {
+        ADDRESS_BURN: '0x0000000000000000000000000000000000000000',
+        MAX_VALUE: '10000000',
+      }),
+    ).toThrow('Error hydrating arguments')
+  })
+
   it('should hydrate arguments', () => {
     const hydrated = hydrateArguments(
       EVMSet.parse({
@@ -137,5 +146,43 @@ describe('hydrateArguments', () => {
         ],
       }),
     )
+  })
+})
+
+describe('searchReplaceArgument', () => {
+  it('should replace a string correctly', () => {
+    expect(
+      searchReplaceArgument('$ADDRESS_BURN', {
+        ADDRESS_BURN: '0x0000000000000000000000000000000000000000',
+      }),
+    ).toBe('0x0000000000000000000000000000000000000000')
+  })
+
+  it('should replace an array correctly', () => {
+    expect(
+      searchReplaceArgument(['$ADDRESS_BURN', 'ADDRESS_BURN'], {
+        ADDRESS_BURN: '0x0000000000000000000000000000000000000000',
+      }),
+    ).toStrictEqual([
+      '0x0000000000000000000000000000000000000000',
+      'ADDRESS_BURN',
+    ])
+  })
+
+  it('should replace an object correctly', () => {
+    expect(
+      searchReplaceArgument(
+        {
+          address: '$ADDRESS_BURN',
+          name: 'Burn',
+        },
+        {
+          ADDRESS_BURN: '0x0000000000000000000000000000000000000000',
+        },
+      ),
+    ).toStrictEqual({
+      address: '0x0000000000000000000000000000000000000000',
+      name: 'Burn',
+    })
   })
 })
