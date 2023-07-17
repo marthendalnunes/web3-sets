@@ -3,20 +3,20 @@ import {
   RuleOperationResults,
   RuleOperationResultsRef,
 } from 'src/types'
-import { Rule, RuleOperation, RuleOperationAllArgs } from 'src/types/set/rule'
+import { Rule, RuleOperation, RuleOperationOneOfArgs } from 'src/types/set/rule'
 import { flattenConditionOperationResults } from 'src/utils/flatten-condition-operation-results'
 
 /**
- * @name ruleOperationAll
- * @description Check if all the conditions and rules are satisfied
+ * @name ruleOperationOneOf
+ * @description Check if one of the conditions and rules are satisfied
  * @param operation The operation containing the method and arguments
  * @param state The state containing the entity results, rules and artifacts
  * @returns Returns the result of the logic operation
- * @throws If the operation method is not 'all'
+ * @throws If the operation method is not 'oneOf'
  * @throws If the operation arguments are invalid
  * @throws If the reference is invalid
  */
-export function ruleOperationAll(
+export function ruleOperationOneOf(
   { method, args }: RuleOperation,
   {
     entityResults,
@@ -25,9 +25,9 @@ export function ruleOperationAll(
     rules: Rule[]
   },
 ): RuleOperationResults {
-  if (method !== 'all') throw new Error('Invalid operation method')
+  if (method !== 'oneOf') throw new Error('Invalid operation method')
 
-  const safeArgs = RuleOperationAllArgs.safeParse(args)
+  const safeArgs = RuleOperationOneOfArgs.safeParse(args)
   if (!safeArgs.success) throw new Error('Invalid operation arguments')
 
   const refs = safeArgs.data
@@ -56,7 +56,7 @@ export function ruleOperationAll(
 
   return {
     method,
-    status: references.every((ref) => ref?.status === true),
+    status: references.some((ref) => ref?.status === true),
     references: references.filter(
       (item): item is RuleOperationResultsRef => item !== undefined,
     ),

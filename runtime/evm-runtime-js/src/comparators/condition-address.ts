@@ -1,6 +1,6 @@
 import { getAddress } from 'viem'
 
-export function conditionString(
+export function conditionAddress(
   condition: string,
   operation_argument: string,
   artifact_value: string,

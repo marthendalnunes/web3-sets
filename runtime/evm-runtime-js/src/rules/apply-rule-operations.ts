@@ -1,11 +1,26 @@
-import { EntityResults, RuleOperationResults, RuleResults } from '../types'
-import { Rule, RuleOperation } from '../types/set/rule'
-import { ruleOperationAll } from './operations/rule-operation-all'
-import { ruleOperationOneOf } from './operations/rule-operation-oneOf'
+import {
+  EVMStateArtifacts,
+  EntityResults,
+  RuleOperationResults,
+  RuleResults,
+} from '../types'
+import { Rule } from '../types/set/rule'
+import {
+  ruleOperationAfterBlock,
+  ruleOperationAfterTimestamp,
+  ruleOperationAll,
+  ruleOperationBeforeBlock,
+  ruleOperationBeforeTimestamp,
+  ruleOperationBetweenBlocks,
+  ruleOperationBetweenTimestamps,
+  ruleOperationOneOf,
+  ruleOperationRange,
+} from './operations'
 
 export function applyRuleOperations(
   entityResults: EntityResults[],
   rules: Rule[],
+  artifacts: EVMStateArtifacts,
 ): RuleResults[] {
   const RULE_RESULTS: RuleResults[] = []
   const rule_roots = rules.filter((rule: Rule) => rule.root === true)
@@ -22,39 +37,98 @@ export function applyRuleOperations(
     } as RuleResults
 
     // Loop through each rule operation
-    for (let index = 0; index < rule.operations.length; index++) {
-      const operation: RuleOperation = rule.operations[index]
-
+    for (const operation of rule.operations) {
       switch (operation.method) {
         case 'all': {
           const _result: RuleOperationResults = ruleOperationAll(operation, {
-            entityResults: entityResults,
-            rules: rules,
+            entityResults,
+            rules,
           })
           RESULT.operations.push(_result)
           break
         }
         case 'oneOf': {
           const _result: RuleOperationResults = ruleOperationOneOf(operation, {
-            entityResults: entityResults,
-            rules: rules,
+            entityResults,
+            rules,
           })
           RESULT.operations.push(_result)
           break
         }
-        case 'range':
+        case 'range': {
+          const _result: RuleOperationResults = ruleOperationRange(operation, {
+            entityResults,
+            rules,
+          })
+          RESULT.operations.push(_result)
           break
-        case 'beforeBlock':
+        }
+        case 'beforeBlock': {
+          const _result: RuleOperationResults = ruleOperationBeforeBlock(
+            operation,
+            {
+              entityResults,
+              artifacts,
+            },
+          )
+          RESULT.operations.push(_result)
           break
-        case 'afterBlock':
+        }
+        case 'afterBlock': {
+          const _result: RuleOperationResults = ruleOperationAfterBlock(
+            operation,
+            {
+              entityResults,
+              artifacts,
+            },
+          )
+          RESULT.operations.push(_result)
           break
-        case 'betweenBlocks':
+        }
+        case 'betweenBlocks': {
+          const _result: RuleOperationResults = ruleOperationBetweenBlocks(
+            operation,
+            {
+              entityResults,
+              artifacts,
+            },
+          )
+          RESULT.operations.push(_result)
           break
-        case 'beforeTimestamp':
+        }
+        case 'beforeTimestamp': {
+          const _result: RuleOperationResults = ruleOperationBeforeTimestamp(
+            operation,
+            {
+              entityResults,
+              artifacts,
+            },
+          )
+          RESULT.operations.push(_result)
           break
-        case 'afterTimestamp':
+        }
+        case 'afterTimestamp': {
+          const _result: RuleOperationResults = ruleOperationAfterTimestamp(
+            operation,
+            {
+              entityResults,
+              artifacts,
+            },
+          )
+          RESULT.operations.push(_result)
           break
-        case 'betweenTimestamps':
+        }
+        case 'betweenTimestamps': {
+          const _result: RuleOperationResults = ruleOperationBetweenTimestamps(
+            operation,
+            {
+              entityResults,
+              artifacts,
+            },
+          )
+          RESULT.operations.push(_result)
+          break
+        }
       }
     }
 

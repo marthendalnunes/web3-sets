@@ -2,7 +2,7 @@ import { z } from 'zod'
 
 export const ConditionOperationArtifactRef = z.object({
   id: z.string(),
-  object: z.string(),
+  reference: z.string(),
 })
 export type ConditionOperationArtifactRef = z.infer<
   typeof ConditionOperationArtifactRef
@@ -45,7 +45,10 @@ export type RuleOperationResultsRef = z.infer<typeof RuleOperationResultsRef>
 export const RuleOperationResults = z.object({
   status: z.boolean(),
   method: z.string(),
-  references: z.array(RuleOperationResultsRef),
+  references: z.union([
+    z.array(RuleOperationResultsRef),
+    z.array(RuleOperationResultsRef).array(),
+  ]),
 })
 export type RuleOperationResults = z.infer<typeof RuleOperationResults>
 
