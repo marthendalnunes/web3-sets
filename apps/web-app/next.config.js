@@ -29,6 +29,7 @@ const nextConfig = {
       loader: 'next-image-loader',
       options: { assetPrefix: '' },
     })
+    config.resolve.fallback = { fs: false, net: false, tls: false }
     return config
   },
 }

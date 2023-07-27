@@ -11,9 +11,7 @@
   "main": "dist/index.js",
   "module": "dist/index.js",
   "typings": "dist/index.d.ts",
-  "files": [
-    "dist"
-  ],
+  "files": ["dist"],
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
@@ -29,7 +27,6 @@
     "analyze": "size-limit --why",
     "bench": "vitest bench --no-threads",
     "bench:ci": "CI=true vitest bench --no-threads",
-    "build": "tsc && vite build",
     "changeset": "changeset",
     "changeset:release": "pnpm build && changeset publish",
     "changeset:version": "changeset version && pnpm install --lockfile-only",
@@ -40,7 +37,6 @@
     "preinstall": "npx only-allow pnpm",
     "prepublishOnly": "pnpm bun scripts/prepublishOnly.ts",
     "prepare": "npx simple-git-hooks",
-    "test": "vitest dev --no-threads",
     "test:cov": "vitest dev --coverage --no-threads",
     "test:ci": "CI=true vitest --coverage --no-threads"
   },
@@ -79,9 +75,7 @@
     "vitest": "~0.32.2"
   },
   "tsup": {
-    "entry": [
-      "src/index.ts"
-    ]
+    "entry": ["src/index.ts"]
   },
   "simple-git-hooks": {
     "pre-commit": "pnpm format"

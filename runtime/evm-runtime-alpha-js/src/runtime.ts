@@ -45,11 +45,8 @@ export async function runtime({
     const conditioned = applyConditionOperations(injected)
     // 5. Apply rules to Entity smart contract objects EVM state and conditions
     const analysis = applyRuleOperations(conditioned)
+    // @ts-ignore
     return analysis
-    return {
-      set: conditioned,
-      analysis,
-    }
   } catch (error: any) {
     console.error(error)
     return

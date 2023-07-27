@@ -6,18 +6,14 @@
   "main": "dist/index.js",
   "module": "dist/identity.esm.js",
   "typings": "dist/index.d.ts",
-  "files": [
-    "dist",
-    "src"
-  ],
+  "files": ["dist", "src"],
   "scripts": {
     "analyze": "size-limit --why",
     "build": "dts build",
     "lint": "dts lint",
     "prepare": "dts build",
     "size": "size-limit",
-    "start": "dts watch",
-    "test": "dts test"
+    "start": "dts watch"
   },
   "husky": {
     "hooks": {

@@ -1,5 +1,6 @@
 {
   "extends": ["next/core-web-vitals", "prettier"],
+  "root": true,
   "plugins": ["prettier"],
   "rules": {
     "prettier/prettier": ["error"]
@@ -10,9 +11,6 @@
       "files": ["**/*.ts", "**/*.tsx"],
       "plugins": ["unused-imports", "tailwindcss", "simple-import-sort"],
       "extends": ["plugin:tailwindcss/recommended", "next/core-web-vitals", "plugin:prettier/recommended"],
-      "parserOptions": {
-        "project": "./tsconfig.json"
-      },
       "rules": {
         "prettier/prettier": [
           "error",

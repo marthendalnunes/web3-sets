@@ -17,13 +17,9 @@
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",
   "module": "dist/schema.esm.js",
-  "files": [
-    "dist",
-    "src"
-  ],
+  "files": ["dist", "src"],
   "scripts": {
     "build": "tsdx build",
-    "test": "tsdx test",
     "lint": "tsdx lint",
     "lint:fix": "tsdx lint --fix",
     "watch": "tsdx watch",

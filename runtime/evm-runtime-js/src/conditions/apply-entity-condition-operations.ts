@@ -50,6 +50,7 @@ export function applyEntityConditionOperations(
     // We know a single match is enough to satisfy the condition.
     // If there are no matches, the status will remain false.
     entity_reference.status = _totalMatches.length > 0
+    // @ts-ignore
     entity_reference.conditions = _totalMatches
     ENTITIES.push(entity_reference)
   }
