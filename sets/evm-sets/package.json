@@ -9,18 +9,14 @@
   "main": "dist/index.js",
   "module": "dist/smart-contract-sets.esm.js",
   "typings": "dist/index.d.ts",
-  "files": [
-    "dist",
-    "src"
-  ],
-  "scripts": { 
+  "files": ["dist", "src"],
+  "scripts": {
     "analyze": "size-limit --why",
     "build": "dts build",
     "lint": "dts lint",
     "prepare": "dts build",
     "size": "size-limit",
     "start": "dts watch",
-    "test": "dts test",
     "prebuild": "rm -rf dist/sets",
     "postbuild": "cp -R src/sets dist/sets"
   },
