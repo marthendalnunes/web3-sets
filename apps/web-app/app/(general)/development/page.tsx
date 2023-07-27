@@ -1,4 +1,3 @@
-import { CodePreview } from '@/components/code-preview'
 import { LinkComponent } from '@/components/shared/link-component'
 export default function PageHowItWorks() {
   return (

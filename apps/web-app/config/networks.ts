@@ -46,4 +46,4 @@ if (PROVIDERS.length === 0) {
 }
 
 // @ts-ignore
-export const { chains, provider } = configureChains(CHAINS, [...PROVIDERS])
+export const { chains, publicClient, webSocketPublicClient } = configureChains(CHAINS, [...PROVIDERS])

@@ -27,7 +27,7 @@
     "analyze": "size-limit --why",
     "bench": "vitest bench --no-threads",
     "bench:ci": "CI=true vitest bench --no-threads",
-    "build": "tsc && vite build",
+    "build": "tsc",
     "changeset": "changeset",
     "changeset:release": "pnpm build && changeset publish",
     "changeset:version": "changeset version && pnpm install --lockfile-only",
@@ -70,8 +70,6 @@
     "tsconfig": "workspace:*",
     "tsup": "^6.6.3",
     "typescript": "^4.9.4",
-    "vite": "^4.1.4",
-    "vite-plugin-dts": "^2.3.0",
     "vitest": "~0.32.2"
   },
   "tsup": {
